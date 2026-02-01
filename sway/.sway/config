@@ -1,9 +1,3 @@
-# Default config for sway
-#
-# Copy this to ~/.config/sway/config and edit it to your liking.
-#
-# Read `man 5 sway` for a complete reference.
-
 exec pipewire
 exec mako
 
@@ -13,17 +7,12 @@ exec /usr/libexec/xdg-desktop-portal-gnome
 exec dbus-update-activation-environment WAYLAND_DISPLAY
 
 ### Variables
-#
-# Logo key. Use Mod1 for Alt.
 set $mod Mod4
-# Home row direction keys, like vim
 set $left h
 set $down j
 set $up k
 set $right l
-# Your preferred terminal emulator
 set $term foot
-# Your preferred application launcher
 set $menu wmenu-run
 
 ### Theming
@@ -53,28 +42,7 @@ exec_always {
 }
 
 ### Output configuration
-#
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output * bg /home/pasta/wallpapers/flower_2.jpg fill
-#
-# Example configuration:
-#
-#   output HDMI-A-1 resolution 1920x1080 position 1920,0
-#
-# You can get the names of your outputs by running: swaymsg -t get_outputs
-
-### Idle configuration
-#
-# Example configuration:
-#
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
-#
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
 
 exec swayidle -w \
     timeout 300 'swaylock -f -c 000000' \
@@ -84,19 +52,6 @@ exec swayidle -w \
 for_window [app_id="com.github.iwalton3.jellyfin-media-player"] inhibit_idle fullscreen
 
 ### Input configuration
-#
-# Example configuration:
-#
-#   input "2:14:SynPS/2_Synaptics_TouchPad" {
-#       dwt enabled
-#       tap enabled
-#       natural_scroll enabled
-#       middle_emulation enabled
-#   }
-#
-# You can get the names of your inputs by running: swaymsg -t get_inputs
-# Read `man 5 sway-input` for more information about this section.
-
 input "1267:12615:DELL0B21:00_04F3:3147_Touchpad" {
     click_method clickfinger
     clickfinger_button_map lrm
@@ -180,7 +135,6 @@ input "1267:12615:DELL0B21:00_04F3:3147_Touchpad" {
     bindsym $mod+Shift+9 move container to workspace number 9
     bindsym $mod+Shift+0 move container to workspace number 10
     # Note: workspaces can have any name you want, not just numbers.
-    # We just use 1-10 as the default.
 #
 # Layout stuff:
 #
@@ -209,9 +163,6 @@ input "1267:12615:DELL0B21:00_04F3:3147_Touchpad" {
 #
 # Scratchpad:
 #
-    # Sway has a "scratchpad", which is a bag of holding for windows.
-    # You can send windows there and get them back later.
-
     # Move the currently focused window to the scratchpad
     bindsym $mod+Shift+minus move scratchpad
 
