@@ -1,0 +1,31 @@
+#!/bin/bash
+
+AUDIO_HIGH_SYMBOL=${AUDIO_HIGH_SYMBOL:-'  '}
+
+AUDIO_MED_THRESH=${AUDIO_MED_THRESH:-50}
+AUDIO_MED_SYMBOL=${AUDIO_MED_SYMBOL:-'  '}
+
+AUDIO_LOW_THRESH=${AUDIO_LOW_THRESH:-0}
+AUDIO_LOW_SYMBOL=${AUDIO_LOW_SYMBOL:-'  '}
+
+AUDIO_MUTED_SYMBOL=${AUDIO_MUTED_SYMBOL:-'  '}
+
+declare -i vol
+
+function print_block {
+    output_status=$(wpctl get-volume @DEFAULT_SINK@)
+
+    vol=$(echo "$output_status" | awk '{ print $2 * 100 }')
+    muted=$(echo "$output_status" | awk '{ if ($3) print 1; else print 0 }')
+
+    SYMB=$AUDIO_HIGH_SYMBOL
+    [[ $vol -le $AUDIO_MED_THRESH ]] && SYMB=$AUDIO_MED_SYMBOL
+    [[ $vol -le $AUDIO_LOW_THRESH ]] && SYMB=$AUDIO_LOW_SYMBOL
+    [[ $muted -eq 1 ]] && SYMB=$AUDIO_MUTED_SYMBOL
+
+    echo -n "$SYMB"; printf "%4s\n" "$vol%"
+}
+
+print_block
+
+exit 0
