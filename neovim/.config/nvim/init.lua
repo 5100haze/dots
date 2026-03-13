@@ -189,6 +189,21 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('telescope-lsp-attach', { clear = true }),
+        callback = function(event)
+          local buf = event.buf
+
+          vim.keymap.set('n', 'grr', builtin.lsp_references, { buffer = buf, desc = '[G]oto [R]eferences' })
+          vim.keymap.set('n', 'gri', builtin.lsp_implementations, { buffer = buf, desc = '[G]oto [I]mplementation' })
+          -- <C-t> to jump back
+          vim.keymap.set('n', 'grd', builtin.lsp_definitions, { buffer = buf, desc = '[G]oto [D]efinition' })
+          vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, { buffer = buf, desc = 'Open Document Symbols' })
+          vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols, { buffer = buf, desc = 'Open Workspace Symbols' })
+          vim.keymap.set('n', 'grt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [T]ype Definition' })
+        end,
+      })
+
       vim.keymap.set('n', '<leader>/', function()
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
           winblend = 10,
@@ -235,20 +250,7 @@ require('lazy').setup({
 
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
-          map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-
-          map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-
-          -- <C-t> to jump back
-          map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-
           map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
-          map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
-
-          map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
-
-          map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
 
           -- highlight references of word under cursor
           local client = vim.lsp.get_client_by_id(event.data.client_id)
