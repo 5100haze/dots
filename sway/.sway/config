@@ -1,4 +1,3 @@
-exec pipewire
 exec mako
 
 # alt key (winkey broke :/)
