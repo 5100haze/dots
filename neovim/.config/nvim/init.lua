@@ -260,9 +260,6 @@ require('lazy').setup({
         end,
       })
 
-      -- broadcast new capabilities to servers
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
-
       ---@type table<string, vim.lsp.Config>
       local servers = {
         clangd = {},
@@ -308,7 +305,6 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       for name, server in pairs(servers) do
-        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
         vim.lsp.config(name, server)
         vim.lsp.enable(name)
       end
@@ -427,9 +423,11 @@ require('lazy').setup({
           local buf, filetype = args.buf, args.match
 
           local language = vim.treesitter.language.get_lang(filetype)
-          if not vim.tbl_contains(parsers, language) then return end
+          if not language then return end
 
-          vim.treesitter.start()
+          if not vim.treesitter.language.add(language) then return end
+          vim.treesitter.start(buf, language)
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })
     end,
