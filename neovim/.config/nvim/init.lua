@@ -430,7 +430,7 @@ require('lazy').setup({
     end,
   },
 
-  { import = 'custom.plugins' },
+  { import = 'plugins' },
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {
