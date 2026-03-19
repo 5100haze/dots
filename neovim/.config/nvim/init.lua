@@ -87,7 +87,7 @@ local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
 require('lazy').setup({
-  { dir = '~/workbench/dev/chomp.nvim' },
+  { dir = '~/workbench/dev/chomp.nvim', opts = {} },
   { 'NMAC427/guess-indent.nvim', opts = {} },
   {
     'lewis6991/gitsigns.nvim',
