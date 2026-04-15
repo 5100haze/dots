@@ -59,6 +59,22 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function() vim.hl.on_yank() end,
 })
 
+-- plugin hooks
+vim.api.nvim_create_autocmd('PackChanged', {
+  callback = function(ev)
+    local name, kind = ev.data.spec.name, ev.data.kind
+
+    if name == 'nvim-treesitter' and kind == 'update' then
+      if not ev.data.active then vim.cmd.packadd 'nvim-treesitter' end
+      vim.cmd 'TSUpdate'
+    end
+
+    if name == 'telescope-fzf-native.nvim' and (kind == 'install' or kind == 'update') then vim.system({ 'make' }, { cwd = ev.data.path }) end
+
+    if name == 'LuaSnip' and (kind == 'install' or kind == 'update') then vim.system({ 'make', 'install_jsregexp' }, { cwd = ev.data.path }) end
+  end,
+})
+
 vim.cmd.colorscheme 'lunaperche'
 
 -- vim: ts=2 sts=2 sw=2 et
