@@ -100,4 +100,4 @@ for name, server in pairs(servers) do
   vim.lsp.enable(name)
 end
 
-vim.lsp.enable 'roslyn_ls' -- servers not in mason registry
+-- vim.lsp.enable 'roslyn_ls' -- servers not in mason registry
