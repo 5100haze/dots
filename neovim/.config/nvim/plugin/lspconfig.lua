@@ -57,6 +57,7 @@ local servers = {
   gopls = {},
   pyright = {},
   rust_analyzer = {},
+  ansiblels = {},
 
   stylua = {},
   lua_ls = {
