@@ -161,12 +161,12 @@ cleanup() {
   del_jump inet filter input qemu
   del_jump inet filter forward qemu
   del_jump inet nat postrouting qemu
-  sudo nft flush chain inet filter qemu-input
-  sudo nft flush chain inet filter qemu-forward
-  sudo nft delete chain inet filter qemu-input
-  sudo nft delete chain inet filter qemu-forward
-  sudo nft flush chain inet nat qemu-postrouting
-  sudo nft delete chain inet nat qemu-postrouting
+  sudo nft flush chain inet filter qemu-input 2>/dev/null
+  sudo nft flush chain inet filter qemu-forward 2>/dev/null
+  sudo nft delete chain inet filter qemu-input 2>/dev/null
+  sudo nft delete chain inet filter qemu-forward 2>/dev/null
+  sudo nft flush chain inet nat qemu-postrouting 2>/dev/null
+  sudo nft delete chain inet nat qemu-postrouting 2>/dev/null
   sudo nft delete chain inet nat postrouting 2>/dev/null
   [[ $NET == bridge ]] && sudo ip link set "$DIF" nomaster
   sudo kill $(cat /var/run/dnsmasq.pid)
