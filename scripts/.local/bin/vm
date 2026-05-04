@@ -1,0 +1,175 @@
+#!/bin/bash
+# shitty helper script for launching a qemu image
+# (assumes nftables)
+set -euo pipefail
+
+e=[!]
+i=[+]
+v=[*]
+
+show_help() {
+  echo \
+"usage:
+  $0 [options] file
+
+options:
+  -m, --memory          Amount of memory in human-readable format (6G, 512Mi...) (4Gi)
+  -c, --cores           Number of cpu cores (2)
+  -n, --network         Type of network. one of host, nat, isolated, bridge (nat)
+  -a, --arch            Architecture. (x86_64)
+  -t, --no-graphics     Launch without graphics
+  -v, --verbose         Verbose
+  -h, --help            Show this message and exit
+"
+}
+
+LONGOPTS=memory:,cores:,network:,no-graphics,verbose,help
+OPTIONS=m:c:n:tvh
+
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@") || exit 2
+eval set -- "$PARSED"
+
+MEM=4G CORES=2 NET=nat GRAPHIC=1 ARCH=x86_64 VERBOSE=0
+while true; do
+  case $1 in
+    -m|--memory)
+      MEM=numfmt --from=auto "$2" --to-unit 1048576
+      shift 2
+      ;;
+    -c|--cores)
+      CORES=$2
+      shift 2
+      ;;
+    -n|--network)
+      echo host nat bridge isolated | grep -w -q $2 && NET=$2 || { echo "$e network mode $2 not recognized"; exit 2; }
+      shift 2
+      ;;
+    -t|--no-graphics)
+      GRAPHIC=0
+      shift
+      ;;
+    -h|--help)
+      show_help
+      exit 0
+      ;;
+    -v|--verbose)
+      VERBOSE=1
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      exit 2
+      ;;
+  esac
+done
+
+if [[ $# -ne 1 ]]; then
+  show_help
+  exit 2
+fi
+
+DIF=$(ip route | grep default | awk '{print $5}')
+
+ip -br -f bridge link | grep -w -q ^br0 || {
+  echo "$i creating bridge interface..."
+  sudo ip link add name br0 type bridge
+}
+[[ $NET != isolated ]] && {
+  echo "$i configuring ip addressing..."
+  sudo ip address add 172.20.0.1/16 dev br0 2>/dev/null || true
+  echo "$i setting up bridge firewall rules..."
+  sudo nft -f - << EOF
+table inet filter {
+  chain input {
+    counter jump qemu-input comment qemu
+  }
+  chain qemu-input {
+    udp dport 67 iifname br0 accept comment "virt bridge dhcp"
+    udp dport 53 ip saddr 172.20.0.0/16 accept comment "virt bridge dns"
+    tcp dport 53 ip saddr 172.20.0.0/16 accept comment "virt bridge dns"
+  }
+}
+EOF
+}
+grep -q "^allow br0$" /etc/qemu/bridge.conf || sudo echo "allow br0" >> /etc/qemu/bridge.conf
+
+#printf -v MACADDR "52:54:%02x:%02x:%02x:%02x" $(( $RANDOM & 0xff)) $(( $RANDOM & 0xff )) $(( $RANDOM & 0xff)) $(( $RANDOM & 0xff ))
+NETARG="bridge,helper=/usr/lib/qemu/qemu-bridge-helper,model=virtio-net-pci"
+case $NET in
+  nat)
+    sudo ip link set $DIF nomaster
+    sudo sysctl -w net.ipv4.ip_forward=1 > /dev/null && echo "$i enabled ipv4 forwarding"
+    echo "$i adding firewall rules for nat..."
+    sudo nft -f - << EOF
+table inet filter {
+  chain forward {
+    counter jump qemu-forward comment qemu
+  }
+  chain qemu-forward {
+    ct state established,related accept
+    iifname br0 oifname $DIF accept
+  }
+}
+table inet nat {
+  chain postrouting {
+    type nat hook postrouting priority srcnat
+    counter jump qemu-postrouting comment qemu
+  }
+  chain qemu-postrouting {
+    oifname $DIF ip saddr 172.20.0.0/16 masquerade
+  }
+}
+EOF
+  ;;
+  bridge)
+    echo "$i setting up bridged networking..."
+    sudo ip link set $DIF master br0
+  ;;
+esac
+
+echo "$i starting dnsmasq..."
+sudo dnsmasq -C /dev/null --interface=br0 --bind-interfaces --dhcp-range=172.20.0.2,172.20.255.254 &
+
+echo "$i launching $1..."
+CMD="qemu-system-$ARCH \
+  -m "$MEM" \
+  -smp "$CORES" \
+  -nic "$NETARG" \
+  -machine q35 \
+  -cpu host \
+  -accel kvm"
+[[ $GRAPHIC -eq 0 ]] && CMD="$CMD -nographic"
+CMD="$CMD $1"
+
+$CMD
+
+del_jump() {
+  local h
+  # parse out handle from nft, not sure of a better way to do this
+  handles=$(sudo nft -a list chain "$1" "$2" "$3" 2>/dev/null | awk -v c="$4" '$0 ~ c { print $NF }')
+  [[ -n $handles ]] && echo $handles | while read -r h; do
+    sudo nft delete rule "$1" "$2" "$3" handle "$h" 2>/dev/null
+  done
+}
+
+cleanup() {
+  echo "$i cleaning up..."
+  set +e
+  del_jump inet filter input qemu
+  del_jump inet filter forward qemu
+  del_jump inet nat postrouting qemu
+  sudo nft flush chain inet filter qemu-input
+  sudo nft flush chain inet filter qemu-forward
+  sudo nft delete chain inet filter qemu-input
+  sudo nft delete chain inet filter qemu-forward
+  sudo nft flush chain inet nat qemu-postrouting
+  sudo nft delete chain inet nat qemu-postrouting
+  sudo nft delete chain inet nat postrouting 2>/dev/null
+  [[ $NET == bridge ]] && sudo ip link set "$DIF" nomaster
+  sudo kill $(cat /var/run/dnsmasq.pid)
+}
+
+trap cleanup EXIT
