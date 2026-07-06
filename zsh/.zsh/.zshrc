@@ -47,6 +47,7 @@ bindkey -M vicmd v edit-command-line
 alias ls='ls --color=auto'
 alias vim='nvim'
 alias vxxd='vim -b -c ":%!xxd" -c "set nomodified ft=xxd"'
+alias vide='vim -c ":10 sp | term" -c ":Neotree" -c ":wincmd h"'
 
 fkill() {
     local pid
