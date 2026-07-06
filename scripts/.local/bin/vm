@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # shitty helper script for launching a qemu image
 set -euo pipefail
 
