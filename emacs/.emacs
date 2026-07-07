@@ -25,6 +25,8 @@
      "https://www.bleepingcomputer.com/feed/"
      "https://icode4.coffee/?feed=rss2"
      ("https://iczelia.net/index.xml" math)
+     ("https://k-monk.org/feed.xml" programming)
+     ("https://fgiesen.wordpress.com/feed/" programming)
      "https://blog.archive.org/feed/"
      "https://reddit.com/r/librarians/.rss"
      "https://reddit.com/r/archivists/.rss"
