@@ -49,6 +49,8 @@ bindkey -v
 
 autoload edit-command-line; zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
+bindkey -M viins '^[.' insert-last-word
+
 
 alias ls='ls --color=auto'
 alias vim='nvim'
