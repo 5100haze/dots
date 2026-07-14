@@ -27,6 +27,8 @@
      ("https://iczelia.net/index.xml" math)
      ("https://k-monk.org/feed.xml" programming)
      ("https://fgiesen.wordpress.com/feed/" programming)
+     "https://www.eamoncaddigan.net/posts/index.xml"
+     "https://aniket.foo/index.xml"
      "https://blog.archive.org/feed/"
      "https://reddit.com/r/librarians/.rss"
      "https://reddit.com/r/archivists/.rss"
