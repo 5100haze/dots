@@ -69,6 +69,21 @@ fi
 export VISUAL=vim
 export GPG_TTY=$(tty)
 
+zle-keymap-select () {
+    case $KEYMAP in
+        vicmd) printf "\033[2 q";;
+        viins|main) printf "\033[5 q";;
+    esac
+}
+
+zle-line-init () {
+    zle -K viins
+    printf "\033[5 q"
+}
+
+zle -N zle-keymap-select
+zle -N zle-line-init
+
 # plugins
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
