@@ -60,6 +60,9 @@ fi
 # if no interface is found, use the first device with a global scope
 IPADDR=$(ip addr show $IF | perl -n -e "/$AF ([^ \/]+).* scope global/ && print \$1 and exit")
 
+# also exit if no ip is assigned
+[[ -z $IPADDR ]] && exit
+
 case $BLOCK_BUTTON in
   3) echo -n "$IPADDR" | xclip -q -se c ;;
 esac
