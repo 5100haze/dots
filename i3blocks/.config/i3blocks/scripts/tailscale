@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tailscale status >/dev/null || exit
+tailscale status >/dev/null || exit 0
 
 LABEL=${LABEL:-'ts:'}
 
@@ -8,7 +8,7 @@ ip=$(tailscale ip | head -n1)
 machine_name=$(tailscale whois $ip | grep -oP -m1 'Name: +\K[^\.]+')
 
 msg+="$LABEL $machine_name"
-exit_node=$(tailscale exit-node list | grep selected | awk '{print $2}' | cut -d. -f1)
+exit_node=$(tailscale exit-node list | awk '/selected/ {print $2}' | cut -d. -f1)
 [[ -n $exit_node ]] && msg+=" (exit: $exit_node)"
 
 echo $msg
