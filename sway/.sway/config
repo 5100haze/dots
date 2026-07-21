@@ -20,14 +20,14 @@ set $menu wmenu-run
 #set $system_dpi_scaling_factor 2.6
 set $cursor_size 24
 set $cursor_theme Vanilla-DMZ
-#set $titlebar_text_size 32
-#set $titlebar_font 'font'
+set $titlebar_text_size 10
+set $titlebar_font 'IosevkaTerm Nerd Font'
 
 # cursor
 seat seat0 xcursor_theme $cursor_theme $cursor_size
 
 # fonts
-#font pango:$titlebar_font $titlebar_text_size
+font pango:$titlebar_font $titlebar_text_size
 
 ## GTK
 set $gnome-schema org.gnome.desktop.interface
@@ -150,6 +150,7 @@ gaps inner 3
 
 bar {
     position top
+    font pango: IosevkaTerm Nerd Font 11
 
     status_command 2>/tmp/i3blocks.err SCRIPT_DIR=~/.config/i3blocks/scripts i3blocks -vvv -c ~/.config/i3blocks/config | tee /tmp/i3blocks.out
 
