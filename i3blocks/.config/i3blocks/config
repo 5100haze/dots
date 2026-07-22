@@ -4,14 +4,14 @@ markup=pango
 interval=persist
 #min_width=CPU 100.00%
 #REFRESH_TIME=1
-#LABEL=CPU 
+LABEL= 
 #WARN_PERCENT=50
 #CRIT_PERCENT=80
 #DECIMALS=2
 
 [memory]
 command=$SCRIPT_DIR/memory
-label=MEM
+label=  
 interval=10
 
 [iface]
@@ -33,6 +33,6 @@ command=$SCRIPT_DIR/time
 interval=1
 #TZ_FILE=~/.tz
 STRFTIME_FORMAT=%Y-%m-%d %R
-TZONES=$DEFAULT_TZ
-TZ_LABELS=,
+TZONES=$DEFAULT_TZ,UTC
+TZ_LABELS=,UTC
 
