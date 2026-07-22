@@ -3,11 +3,23 @@ fpath=(
     $fpath
 )
 
-export PATH="$PATH:/home/pasta/.dotnet/tools"
-# this doesnt work for some reason??
-#autoload -Uz promptinit
-#promptinit
-#prompt witch
+() {
+    local funcs=$ZDOTDIR/func
+
+    typeset -TUg +x FPATH=$funcs:$FPATH fpath
+
+    if [[ -d $funcs ]]; then
+        autoload ${=$(cd "$funcs" && echo *)}
+    fi
+}
+
+setopt promptsubst
+setopt interactivecomments
+setopt numericglobsort
+
+autoload -Uz promptinit
+promptinit
+prompt witch
 
 eval $(dircolors)
 
@@ -43,32 +55,32 @@ bindkey -v
 export VISUAL=vim
 autoload edit-command-line; zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
+bindkey -M viins '^[.' insert-last-word
 
 alias ls='ls --color=auto'
 alias vim='nvim'
 alias vxxd='vim -b -c ":%!xxd" -c "set nomodified ft=xxd"'
 alias vide='vim -c ":10 sp | term" -c ":Neotree" -c ":wincmd h"'
 
-fkill() {
-    local pid
-    if [ "$UID" != "0" ]; then
-        pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
-    else
-        pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-    fi
-
-    if [ "x$pid" != "x" ]
-    then
-        echo $pid | xargs kill -${1:-9}
-    fi
+zle-keymap-select () {
+    case $KEYMAP in
+        vicmd) printf "\033[2 q";;
+        viins|main) printf "\033[5 q";;
+    esac
 }
+
+zle-line-init () {
+    zle -K viins
+    printf "\033[5 q"
+}
+
+zle -N zle-keymap-select
+zle -N zle-line-init
 
 [[ ! -r '/home/pasta/.opam/opam-init/init.zsh' ]] || source '/home/pasta/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 
 # plugins
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-PROMPT="%B%F{yellow}%n%f%b %F{green}%~%f $ "
 
 # vim: ts=4 sts=4 sw=4 expandtab
