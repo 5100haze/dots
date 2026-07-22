@@ -35,11 +35,11 @@ zstyle ':completion:*' ignore-parents parent pwd .. directory
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list '+' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' max-errors 2
-zstyle ':completion:*' menu select=long
+zstyle ':completion:*' menu select
 zstyle ':completion:*' prompt '%e errors'
 zstyle ':completion:*' substitute 'NUMERIC == 2'
 zstyle ':completion:*' use-compctl false
-zstyle :compinstall filename '/home/pasta/.zshrc'
+zstyle :compinstall filename '/home/pasta/.zsh/.zshrc'
 
 autoload -Uz compinit
 compinit
