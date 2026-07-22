@@ -1,0 +1,5 @@
+crt(){
+  curl -s "https://crt.sh/?q=%25.$1" \
+    | grep -oE "[\.a-zA-Z0-9-]+\.$1" \
+    | sort -u
+}
