@@ -278,17 +278,17 @@ go() {
     -machine q35 \
     -accel kvm \
     -drive file=$DRIVE,format=qcow2,index=0,media=disk,if=virtio"
-  [[ $HV_ENLIGHTENMENTS -eq 1 ]] && CMD="$CMD -cpu host,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time" || CMD="$CMD -cpu host"
-  [[ $GRAPHIC -eq 0 ]] && CMD="$CMD -nographic"
-  [[ $SNAPSHOT -eq 1 ]] && CMD="$CMD -snapshot"
-  [[ $INSTALL -eq 1 ]] && CMD="$CMD -drive file=$CDROM,index=2,media=cdrom"
-  [[ $TPM2 -eq 1 ]] && CMD="$CMD -chardev socket,id=chrtpm,path=$TPM_LOC/swtpm-sock \
+  [[ $HV_ENLIGHTENMENTS -eq 1 ]] && CMD+=" -cpu host,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time" || CMD="$CMD -cpu host"
+  [[ $GRAPHIC -eq 0 ]] && CMD+=" -nographic"
+  [[ $SNAPSHOT -eq 1 ]] && CMD+=" -snapshot"
+  [[ $INSTALL -eq 1 ]] && CMD+=" -drive file=$CDROM,index=2,media=cdrom"
+  [[ $TPM2 -eq 1 ]] && CMD+=" -chardev socket,id=chrtpm,path=$TPM_LOC/swtpm-sock \
     -tpmdev emulator,id=tpm0,chardev=chrtpm \
     -device tpm-tis,tpmdev=tpm0"
-  [[ $SECURE_BOOT -eq 1 ]] && CMD="$CMD -drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/ovmf/OVMF_CODE_4M.secboot.fd \
+  [[ $SECURE_BOOT -eq 1 ]] && CMD+=" -drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/ovmf/OVMF_CODE_4M.secboot.fd \
     -drive if=pflash,format=raw,file=$UEFI_VAR_LOC/OVMF_VARS_4M.secboot.fd"
   CMD="$CMD $EXTRA_FLAGS"
-  [[ $MONITOR -eq 1 ]] && CMD="$CMD -monitor unix:/tmp/qemu-monitor.sock,server,nowait &"
+  [[ $MONITOR -eq 1 ]] && CMD+=" -monitor unix:/tmp/qemu-monitor.sock,server,nowait &"
 
   $CMD
   [[ $MONITOR -eq 1 ]] && nc -U /tmp/qemu-monitor.sock
