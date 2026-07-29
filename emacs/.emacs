@@ -19,7 +19,7 @@
      "https://lobste.rs/rss"
      ("https://lwn.net/headlines/rss" linux)
      "https://www.bellingcat.com/feed/"
-     "https://u1f383.github.io/feed.xml"
+     ("https://u1f383.github.io/feed.xml" security-research)
      ("https://ctftime.org/writeups/rss/" sec)
      "https://daniel.haxx.se/blog/feed/"
      "https://www.bleepingcomputer.com/feed/"
@@ -27,6 +27,7 @@
      ("https://iczelia.net/index.xml" math)
      ("https://k-monk.org/feed.xml" programming)
      ("https://fgiesen.wordpress.com/feed/" programming)
+     ("https://blog.jsbarretto.com/rss.xml" programming)
      "https://www.eamoncaddigan.net/posts/index.xml"
      "https://aniket.foo/index.xml"
      "https://dustri.org/b/rss.xml"
@@ -44,7 +45,7 @@
      ("https://seclists.org/rss/oss-sec.rss" sec)
      ("https://seclists.org/rss/fulldisclosure.rss" sec)
      "https://blog.cleancoder.com/atom.xml"
-     ("https://0xdf.gitlab.io/feed.xml" sec)
+     ("https://0xdf.gitlab.io/feed.xml" sec security-research)
      "https://rss.beehiiv.com/feeds/xgTKUmMmUm.xml"
      "https://www.troyhunt.com/rss/"
      ("https://blog.qualys.com/category/vulnerabilities-threat-research/feed" sec)
@@ -65,25 +66,25 @@
      ("https://www.hackthebox.com/rss/blog/threat-intelligence" sec)
      ("https://www.hackthebox.com/rss/blog/write-ups" sec)
      ; TODO: make some good tags hooks for all this shite
-     ("https://www.phrack.org/" sec)
-     ("https://3xpl01tc0d3r.blogspot.com/" sec)
+     ("https://www.phrack.org/" sec security-research)
+     ("https://3xpl01tc0d3r.blogspot.com/" sec security-research)
      ("https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques" sec)
      ("https://blog.reconless.com/" sec)
-     ("https://blog.k3170makan.com/" sec)
+     ("https://blog.k3170makan.com/" sec security-research)
      ("https://www.kitploit.com/" sec)
      ("https://krebsonsecurity.com/" sec)
      ("https://www.pentagrid.ch/en/blog/" sec)
      ("https://portswigger.net/daily-swig" sec)
      ("https://swapcontext.blogspot.com/" sec)
      ("https://www.hexacorn.com/blog/" sec)
-     ("https://x-c3ll.github.io/" sec)
-     ("https://ijustwannared.team/" sec)
+     ("https://x-c3ll.github.io/" sec security-research)
+     ("https://ijustwannared.team/" sec security-research)
      ("https://www.mdsec.co.uk/blog/" sec)
      ("https://labs.f-secure.com/" sec)
      ("https://posts.specterops.io/" sec)
      ("https://unit42.paloaltonetworks.com/" sec)
      ("https://opaque.link/" sec)
-     ("https://oddvar.moe/" sec)
+     ("https://oddvar.moe/" sec security-research)
      ("https://shenaniganslabs.io/" sec)
      ("https://lockboxx.blogspot.com/" sec)
      ("https://outflank.nl/blog/" sec)
