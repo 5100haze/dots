@@ -18,6 +18,8 @@
      "https://news.ycombinator.com/rss"
      "https://lobste.rs/rss"
      ("https://lwn.net/headlines/rss" linux)
+     ("https://jobs.code4lib.org/jobs.atom" jobs)
+     ("https://archivesgig.com/feed/" jobs)
      "https://www.bellingcat.com/feed/"
      ("https://u1f383.github.io/feed.xml" security-research)
      ("https://ctftime.org/writeups/rss/" sec)
