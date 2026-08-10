@@ -61,6 +61,7 @@ alias ls='ls --color=auto'
 alias vim='nvim'
 alias vxxd='vim -b -c ":%!xxd" -c "set nomodified ft=xxd"'
 alias vide='vim -c ":10 sp | term" -c ":Neotree" -c ":wincmd h"'
+alias td='cd $(mktemp -d)'
 
 zle-keymap-select () {
     case $KEYMAP in
