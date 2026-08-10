@@ -15,8 +15,8 @@
 
 (setq elfeed-feeds
    '("https://archlinux.org/feeds/news/"
-     "https://news.ycombinator.com/rss"
-     "https://lobste.rs/rss"
+     ("https://news.ycombinator.com/rss" social)
+     ("https://lobste.rs/rss" social)
      ("https://lwn.net/headlines/rss" linux)
      ("https://jobs.code4lib.org/jobs.atom" jobs)
      ("https://archivesgig.com/feed/" jobs)
@@ -25,8 +25,10 @@
      ("https://ctftime.org/writeups/rss/" sec)
      "https://daniel.haxx.se/blog/feed/"
      "https://www.bleepingcomputer.com/feed/"
+     "https://defcon.org/defconrss.xml"
      "https://icode4.coffee/?feed=rss2"
-     ("https://iczelia.net/index.xml" math)
+     ("https://this.weekinsecurity.com/rss/" sec)
+     ("https://iczelia.net/index.xml" math programming)
      ("https://k-monk.org/feed.xml" programming)
      ("https://fgiesen.wordpress.com/feed/" programming)
      ("https://blog.jsbarretto.com/rss.xml" programming)
