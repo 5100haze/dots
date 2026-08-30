@@ -13,6 +13,13 @@
 
 (keymap-global-set "C-x w" #'elfeed)
 
+(with-eval-after-load 'elfeed-search
+  (defalias 'my/elfeed-toggle-star
+    (elfeed-expose #'elfeed-search-toggle-all 'star)
+
+    (define-key elfeed-search-mode-map (kbd "*") #'my/elfeed-toggle-star)))
+
+
 (setq elfeed-feeds
    '("https://archlinux.org/feeds/news/"
      ("https://news.ycombinator.com/rss" social)
