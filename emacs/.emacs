@@ -21,8 +21,7 @@
 
 
 (setq elfeed-feeds
-   '("https://archlinux.org/feeds/news/"
-     ("https://news.ycombinator.com/rss" social)
+   '(("https://news.ycombinator.com/rss" social)
      ("https://lobste.rs/rss" social)
      ("https://lwn.net/headlines/rss" linux)
      ("https://jobs.code4lib.org/jobs.atom" jobs)
@@ -31,9 +30,12 @@
      ("https://u1f383.github.io/feed.xml" security-research)
      ("https://ctftime.org/writeups/rss/" sec)
      "https://www.netbsd.org/changes/rss-netbsd.xml"
+     "https://www.gentoo.org/feeds/news.xml"
+     "https://archlinux.org/feeds/news/"
      "https://daniel.haxx.se/blog/feed/"
      "https://www.bleepingcomputer.com/feed/"
      "https://defcon.org/defconrss.xml"
+     ("https://eva.ac/blog.rss" security-research)
      "https://icode4.coffee/?feed=rss2"
      ("https://this.weekinsecurity.com/rss/" sec)
      ("https://iczelia.net/index.xml" math programming)
@@ -43,6 +45,7 @@
      "https://www.eamoncaddigan.net/posts/index.xml"
      "https://aniket.foo/index.xml"
      "https://dustri.org/b/rss.xml"
+     "https://attackanddefense.dev/feed.xml"
      "https://blog.archive.org/feed/"
      "https://reddit.com/r/librarians/.rss"
      "https://reddit.com/r/archivists/.rss"
