@@ -12,24 +12,26 @@ show_help() {
   $0 command [options] file
 
 commands:
-  run                   Run a given qemu image
-  install               Create from installation media
+  run                     Run a given qemu image
+  install                 Create from installation media
 
 global options:
-  -m, --memory            Amount of memory in human-readable format (6G, 512Mi...) (4Gi)
-  -c, --cores             Number of cpu cores (2)
-  -n, --network           Type of network. one of host, nat, isolated, bridge (nat)
-  -a, --arch              Architecture. (x86_64)
+  -m, --memory AMT        Amount of memory in human-readable format (6G, 512Mi...) (4Gi)
+  -c, --cores CNT         Number of cpu cores (2)
+  -n, --network TYPE      Type of network. one of host, nat, isolated, bridge (nat)
+      --ssh PORT          Forward given host port to guest 22/tcp
+      --hostfwds FWDS     Comma separated list of hostfwds
+  -a, --arch ARCH         Architecture. (x86_64)
   -t, --no-graphics       Launch without graphics
-  -d, --disks             Comma separated list of additional disks to attach
-  -i, --isos              Comma separated list of additional ISOs to attach
+  -d, --disks DISKS       Comma separated list of additional disks to attach
+  -i, --isos ISOS         Comma separated list of additional ISOs to attach
   -b, --secure-boot       Enable secure boot (requires relevant fw)
   -l, --tpm2              Enable TPM2.0 (requires swtpm)
   -k, --disable-virtio    Don't use virtio for disk and network device
   -o, --hv-enlightenments Enable hyper-v enlightenments (for windows guests)
   -j, --monitor           Enable + connect to qemu monitor
   -p, --snapshot          Run VM in snapshot mode
-  -e, --extra-flags       Additional flags to pass to qemu
+  -e, --extra-flags FLAGS Additional flags to pass to qemu
   -v, --verbose           Verbose
   -h, --help              Show this message and exit
 
