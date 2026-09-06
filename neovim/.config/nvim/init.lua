@@ -23,34 +23,69 @@ vim.o.inccommand = 'split'
 vim.o.cursorline = true
 vim.o.scrolloff = 10
 vim.o.confirm = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
--- keybinds
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
--- make window nav easier
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
--- diagnostic keymaps + config
--- See :help vim.diagnostic.Opts
 vim.diagnostic.config {
   update_in_insert = false,
   severity_sort = true,
-  float = { border = 'rounded', source = 'if_many' },
+  float = { border = 'single', source = 'if_many' },
   underline = { severity = vim.diagnostic.severity.ERROR },
   virtual_text = true, -- text at end of line
   virtual_lines = false, -- lines under
   jump = { float = true }, -- open float when jumping through diags
 }
-vim.keymap.set('n', '<leader>ql', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix [L]ist' })
-vim.keymap.set('n', '<leader>qf', vim.diagnostic.open_float, { desc = 'Open [Q]uickfix [F]loat' })
+
+-- keybinds
+local map = vim.keymap.set
+do
+  map('n', '<Esc>', '<cmd>nohlsearch<CR>')
+  map('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+  map('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+  map('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+  map('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+  map('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+
+  -- make window nav easier
+  map('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+  map('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+  map('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+  map('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+  map('n', '<leader>ql', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix [L]ist' })
+  map('n', '<leader>qf', vim.diagnostic.open_float, { desc = 'Open [Q]uickfix [F]loat' })
+
+  -- kinda emacs in ins
+  map('i', '<C-a>', '<C-o>^', { noremap = true })
+  map('i', '<C-e>', '<C-o>$')
+  map('i', '<C-f>', '<Right>')
+  map('i', '<C-b>', '<Left>')
+
+  -- window shite
+  map({ 'n', 'x' }, '<C-w>,', ':vertical resize -2<CR>', { noremap = true, silent = true })
+  map({ 'n', 'x' }, '<C-w>.', ':vertical resize +2<CR>', { noremap = true, silent = true })
+  map({ 'n', 'x' }, '<C-w>-', ':resize -2<CR>', { noremap = true, silent = true })
+  map({ 'n', 'x' }, '<C-w>+', ':resize +2<CR>', { noremap = true, silent = true })
+  map({ 'n', 'x' }, '<C-w>=', '<C-w>=', { noremap = true, silent = true })
+
+  -- nav
+  map('n', '<C-d>', '<C-d>zz')
+  map('n', '<C-u>', '<C-u>zz')
+  map('n', '<C-f>', '<C-f>zz')
+  map('n', '<C-b>', '<C-b>zz')
+
+  -- move lines
+  map('v', 'J', ":m '>+1<CR>gv")
+  map('v', 'K', ":m '<-2<CR>gv")
+
+  map('n', 'J', 'mzJ`z', { desc = 'join lines and keep cursor position' })
+
+  -- reselect after indent
+  map('v', '<', '<gv')
+  map('v', '>', '>gv')
+end
+
+require('vim._core.ui2').enable()
 
 -- autocommands
 vim.api.nvim_create_autocmd('TextYankPost', {
