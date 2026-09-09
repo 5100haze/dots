@@ -52,6 +52,10 @@ output HDMI-A-1 {
     pos 1920 0
 }
 
+### input
+
+input type:keyboard xkb_options caps:ctrl_modifier
+
 ### idle
 exec swayidle -w \
          timeout 900 'swaylock -f -c 000000' \
